@@ -11,7 +11,7 @@ TSP/.idea/jarRepositories.xml
 *.iws
 *.iml
 *.ipr
-*.xml
+
 
 ### Eclipse ###
 .apt_generated
