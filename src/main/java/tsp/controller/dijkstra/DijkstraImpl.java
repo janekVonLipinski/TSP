@@ -57,18 +57,23 @@ public class DijkstraImpl implements Dijkstra {
                 if (hasBeenSeen.isEmpty()) {
                     Node node = new Node(finalIndexOfNeighbour, costOfNode, currentNode);
                     nextNodes.add(node);
+                    continue;
                 }
 
-                Node yetAnotherNode = hasBeenSeen.get();
+                Node sameNodeFoundPreviously = hasBeenSeen.get();
 
-                if (yetAnotherNode.cost() < costOfNode) {
-                    nextNodes.remove(yetAnotherNode);
+                if (sameNodeFoundPreviously.cost() > costOfNode) {
+                    nextNodes.remove(sameNodeFoundPreviously);
                     Node node = new Node(finalIndexOfNeighbour, costOfNode, currentNode);
                     nextNodes.add(node);
                 }
             }
         }
 
+        return createPathFromNodes(visited);
+    }
+
+    private Path createPathFromNodes(List<Node> visited) {
         Node node = visited.getLast();
         Node current = node;
         int cost = node.cost();
@@ -76,11 +81,11 @@ public class DijkstraImpl implements Dijkstra {
 
         while (current != null) {
             path.add(current.index());
-            current = node.predecessor();
+            current = current.predecessor();
         }
 
-        Path result = new Path(path, cost);
+        Collections.reverse(path);
 
-        return result;
+        return new Path(path, cost);
     }
 }
