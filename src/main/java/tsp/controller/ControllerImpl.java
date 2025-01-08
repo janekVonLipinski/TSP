@@ -17,12 +17,12 @@ public class ControllerImpl implements Controller{
         if (numbersUpTo == 0) {
             List<Integer> zeroList = new ArrayList<>();
             zeroList.add(0);
-            List<List<Integer>> toReturn = new ArrayList<List<Integer>>();
+            List<List<Integer>> toReturn = new ArrayList<>();
             toReturn.add(zeroList);
             return toReturn;
         }
         List<List<Integer>> priorIterations = getIterations(numbersUpTo - 1);
-        List<List<Integer>> newIterations = new ArrayList<List<Integer>>();
+        List<List<Integer>> newIterations = new ArrayList<>();
         for (List<Integer> iteration : priorIterations){
             for (int i = 0; i < numbersUpTo; i++){
                 List<Integer> tempOld = new ArrayList<>(iteration);
