@@ -6,4 +6,5 @@ import tsp.model.Path;
 public interface Controller {
 
     Path calculateShortestPath(AdjacencyMatrix adjacencyMatrix);
+    Path calculateShortestPath(AdjacencyMatrix adjacencyMatrix, int startingPoint);
 }

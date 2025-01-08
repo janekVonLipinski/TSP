@@ -22,7 +22,7 @@ class DijkstraImplTest {
 
         List<Integer> expectedPath = List.of(1, 0, 2, 3);
 
-        Path result = dijkstra.calculateShortestPathBetweenToNodes(adjacencyMatrix, startPoint,endPoint);
+        Path result = dijkstra.calculateShortestPathBetweenToNodes(adjacencyMatrix, startPoint, endPoint);
 
         System.out.println("correct " + expectedPath);
         System.out.println("result " + result.getPath());
