@@ -36,7 +36,7 @@ public class DijkstraImpl implements Dijkstra {
                 int finalIndexOfNeighbour = indexOfNeighbour;
 
                 boolean wasVisited = visited.stream()
-                        .anyMatch(i -> i.index() == finalIndexOfNeighbour);
+                        .anyMatch(node -> node.index() == finalIndexOfNeighbour);
 
                 if (wasVisited) {
                     continue;
@@ -44,14 +44,14 @@ public class DijkstraImpl implements Dijkstra {
 
                 int cost = neighboursOfCurrentNode[indexOfNeighbour];
 
-                if (cost == 0) {
+                if (existsNoPath(cost)) {
                     continue;
                 }
 
                 int costOfNode = cost + currentNode.cost();
 
                 Optional<Node> hasBeenSeen = nextNodes.stream()
-                        .filter(i -> i.index() == finalIndexOfNeighbour)
+                        .filter(node -> node.index() == finalIndexOfNeighbour)
                         .findFirst();
 
                 if (hasBeenSeen.isEmpty()) {
@@ -62,15 +62,27 @@ public class DijkstraImpl implements Dijkstra {
 
                 Node sameNodeFoundPreviously = hasBeenSeen.get();
 
-                if (sameNodeFoundPreviously.cost() > costOfNode) {
-                    nextNodes.remove(sameNodeFoundPreviously);
-                    Node node = new Node(finalIndexOfNeighbour, costOfNode, currentNode);
-                    nextNodes.add(node);
+                if (isNewPathShorter(sameNodeFoundPreviously, costOfNode)) {
+                    replaceNode(nextNodes, sameNodeFoundPreviously, finalIndexOfNeighbour, costOfNode, currentNode);
                 }
             }
         }
 
         return createPathFromNodes(visited);
+    }
+
+    private boolean isNewPathShorter(Node sameNodeFoundPreviously, int costOfNode) {
+        return sameNodeFoundPreviously.cost() > costOfNode;
+    }
+
+    private boolean existsNoPath(int cost) {
+        return cost == 0;
+    }
+
+    private void replaceNode(PriorityQueue<Node> nextNodes, Node sameNodeFoundPreviously, int finalIndexOfNeighbour, int costOfNode, Node currentNode) {
+        nextNodes.remove(sameNodeFoundPreviously);
+        Node node = new Node(finalIndexOfNeighbour, costOfNode, currentNode);
+        nextNodes.add(node);
     }
 
     private Path createPathFromNodes(List<Node> visited) {
