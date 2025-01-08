@@ -25,6 +25,7 @@ class DijkstraImplTest {
         Path result = dijkstra.calculateShortestPathBetweenToNodes(adjacencyMatrix, startPoint,endPoint);
 
         assertArrayEquals(expectedPath.toArray(), result.getPath().toArray());
+        assertEquals(6, result.getCost());
     }
 
     @Test
@@ -47,6 +48,30 @@ class DijkstraImplTest {
         Path result = dijkstra.calculateShortestPathBetweenToNodes(adjacencyMatrix, startPoint,endPoint);
 
         assertArrayEquals(expectedPath.toArray(), result.getPath().toArray());
+        assertEquals(7, result.getCost());
+    }
+
+    @Test
+    void GIVEN_startAndEndpointAreTheSame_Then_shortestPathIs_A_and_costIsZero() {
+
+        int[][] matrix  = {
+                {0, 1, 1, 0, 0, 0},
+                {1, 0, 2, 5, 3, 0},
+                {1, 2, 0, 6, 0, 12},
+                {0, 5, 6, 0, 7, 0},
+                {0, 3, 0, 7, 0, 3},
+                {0, 0, 12, 0, 3, 0}
+        };
+        AdjacencyMatrix adjacencyMatrix = new AdjacencyMatrix(matrix);
+        int startPoint = 0;
+        int endPoint = 0;
+
+        List<Integer> expectedPath = List.of(0);
+
+        Path result = dijkstra.calculateShortestPathBetweenToNodes(adjacencyMatrix, startPoint,endPoint);
+
+        assertArrayEquals(expectedPath.toArray(), result.getPath().toArray());
+        assertEquals(0, result.getCost());
     }
 
 }
