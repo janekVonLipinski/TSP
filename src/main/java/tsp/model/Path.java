@@ -11,6 +11,7 @@ public class Path {
     private final int cost;
 
     public Path chainPath(Path nextPath){
+        path.removeLast();
         path.addAll(nextPath.path);
         int nextCost = cost + nextPath.cost;
         return new Path(path, nextCost);
