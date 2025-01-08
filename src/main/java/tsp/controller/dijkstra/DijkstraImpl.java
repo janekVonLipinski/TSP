@@ -33,15 +33,54 @@ public class DijkstraImpl implements Dijkstra {
 
             for (int indexOfNeighbour = 0; indexOfNeighbour < neighboursOfCurrentNode.length; indexOfNeighbour++) {
 
+                int finalIndexOfNeighbour = indexOfNeighbour;
+
                 boolean wasVisited = visited.stream()
-                        .anyMatch(i -> i.index == indexOfNeighbour);
+                        .anyMatch(i -> i.index() == finalIndexOfNeighbour);
 
                 if (wasVisited) {
                     continue;
                 }
+
+                int cost = neighboursOfCurrentNode[indexOfNeighbour];
+
+                if (cost == 0) {
+                    continue;
+                }
+
+                int costOfNode = cost + currentNode.cost();
+
+                Optional<Node> hasBeenSeen = nextNodes.stream()
+                        .filter(i -> i.index() == finalIndexOfNeighbour)
+                        .findFirst();
+
+                if (hasBeenSeen.isEmpty()) {
+                    Node node = new Node(finalIndexOfNeighbour, costOfNode, currentNode);
+                    nextNodes.add(node);
+                }
+
+                Node yetAnotherNode = hasBeenSeen.get();
+
+                if (yetAnotherNode.cost() < costOfNode) {
+                    nextNodes.remove(yetAnotherNode);
+                    Node node = new Node(finalIndexOfNeighbour, costOfNode, currentNode);
+                    nextNodes.add(node);
+                }
             }
         }
 
-        return null;
+        Node node = visited.getLast();
+        Node current = node;
+        int cost = node.cost();
+        List<Integer> path = new ArrayList<>();
+
+        while (current != null) {
+            path.add(current.index());
+            current = node.predecessor();
+        }
+
+        Path result = new Path(path, cost);
+
+        return result;
     }
 }
