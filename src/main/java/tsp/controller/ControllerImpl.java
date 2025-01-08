@@ -15,7 +15,7 @@ public class ControllerImpl implements Controller{
     @Override
     public Path calculateShortestPath(AdjacencyMatrix adjacencyMatrix, int startingPoint){
         var dijkstra = new DijkstraImpl();
-        List<List<Integer>> permutations = getPermutations(adjacencyMatrix.getMatrix().length);
+        List<List<Integer>> permutations = getPermutations(adjacencyMatrix.getMatrix().length - 1);
         permutations = permutations.stream().filter(x -> x.getFirst() == startingPoint).toList();
         List<Path> paths = new ArrayList<>();
 
@@ -27,6 +27,9 @@ public class ControllerImpl implements Controller{
                         permutation.get(i), permutation.get(i+1));
                 path = path.chainPath(nextPath);
             }
+            var lastPath = dijkstra.calculateShortestPathBetweenToNodes(adjacencyMatrix,
+                    permutation.get(permutation.size()-2), permutation.getLast());
+            path = path.chainPath(lastPath);
             var returnPath = dijkstra.calculateShortestPathBetweenToNodes(adjacencyMatrix,
                     permutation.getLast(), permutation.getFirst());
             paths.add(path.chainPath(returnPath));

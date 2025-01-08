@@ -1,6 +1,9 @@
 package tsp.controller;
 
 import org.junit.jupiter.api.Test;
+import tsp.model.AdjacencyMatrix;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,9 +43,18 @@ class ControllerImplTest {
     @Test
     void GIVEN_adjMatrix_THEN_shortestEulerCircle(){
         //Arrange
-        //var data = new ;
+        var impl = new ControllerImpl();
+        int[][] matrix = {{0, 1, 1, 0}, {1, 0, 5, 0}, {1, 5, 0, 4}, {0, 0, 4, 0}};
+        AdjacencyMatrix adjacencyMatrix = new AdjacencyMatrix(matrix);
+        int startPoint = 1;
+        List<Integer> expectedPath = List.of(1, 0, 2, 3, 2, 0, 1);
+        int expectedCost = 12;
 
         //Act
+        var path = impl.calculateShortestPath(adjacencyMatrix, startPoint);
+
         //Assert
+        assertEquals(expectedCost, path.getCost());
+        assertEquals(expectedPath, path.getPath());
     }
 }
